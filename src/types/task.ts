@@ -19,3 +19,4 @@ export interface TaskFormData {
   category: string;
   priority: TaskPriority;
 }
+

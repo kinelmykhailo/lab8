@@ -65,3 +65,4 @@ export const TaskStats: React.FC<TaskStatsProps> = ({ total, completed, active }
     </section>
   );
 };
+
