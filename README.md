@@ -1,32 +1,121 @@
-# React + TypeScript + Vite
+# Лабораторна робота №8: React Fundamentals
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+**Тема:** React Fundamentals: компоненти, JSX, props, стан, події та списки  
+**Мета:** Ознайомитися з базовими принципами розробки застосунків на React. Навчитися створювати компоненти, передавати дані через props, керувати локальним станом за допомогою `useState`, обробляти події, відображати списки та використовувати умовний рендеринг.  
+**Проєкт:** Клієнтський навчальний застосунок **Study Planner**.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🚀 Стек технологій
+- **React 19.x** (`react`, `react-dom`)
+- **TypeScript 5.x** (строга типізація)
+- **Vite 8.x** (швидкий збирач та HMR)
+- **Node.js 24.x** (відповідає вимозі >= 22.22)
+- **Tailwind CSS 4.x** (`@tailwindcss/vite` utility-first стилізація)
+- **ESLint 9.x** (перевірка якості коду та хуків React)
+- **Lucide React** (іконки інтерфейсу)
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 📂 Структура проєкту
 
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```text
+lab8/
+├── src/
+│   ├── components/
+│   │   ├── Header.tsx         # Шапка із назвою та перемикачем темної теми
+│   │   ├── TaskForm.tsx       # Форма додавання нового завдання з валідацією
+│   │   ├── TaskStats.tsx      # Блок статистики (всього / виконано / в роботі)
+│   │   ├── TaskFilters.tsx    # Фільтрація (всі/активні/виконані), пошук та сортування
+│   │   ├── TaskList.tsx       # Список завдань з умовним рендерингом для порожніх станів
+│   │   └── TaskItem.tsx       # Елемент завдання (перемикання, видалення, бейджі)
+│   ├── data/
+│   │   └── initialTasks.ts    # Стартові навчальні дані
+│   ├── types/
+│   │   └── task.ts            # TypeScript інтерфейси (Task, Priority, Filter, Sort)
+│   ├── App.tsx                # Головний компонент (state, immutable handlers, композиція)
+│   ├── index.css              # Стилі Tailwind CSS
+│   └── main.tsx               # Точка монтування React DOM (StrictMode)
+├── eslint.config.js           # Конфігурація ESLint 9 Flat Config
+├── tsconfig.json              # Конфігурація TypeScript
+├── vite.config.ts             # Конфігурація Vite з плагінами React та Tailwind
+└── package.json
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+---
+
+## 🛠️ Встановлення та запуск
+
+1. **Встановлення залежностей:**
+   ```bash
+   npm install
+   ```
+
+2. **Запуск сервера розробки:**
+   ```bash
+   npm run dev
+   ```
+   Після запуску відкрийте посилання у браузері (зазвичай `http://localhost:5173`).
+
+3. **Перевірка стилю коду (ESLint):**
+   ```bash
+   npm run lint
+   ```
+
+4. **Збірка для продакшну:**
+   ```bash
+   npm run build
+   ```
+
+5. **Попередній перегляд збірки:**
+   ```bash
+   npm run preview
+   ```
+
+---
+
+## ✨ Реалізовані можливості
+
+### Основний функціонал (згідно з технічним завданням)
+1. **Модель завдання (`Task`)**: унікальний `id`, `title`, `description`, `completed`, `priority` (`low` | `medium` | `high`), `category`.
+2. **Компонентна архітектура**: розбиття на 7 незалежних компонентів з передачею даних через `props` і зворотних викликів (callbacks).
+3. **Відображення списку**: рендеринг через `.map()` зі стабільним унікальним `key={task.id}`.
+4. **Додавання завдання (`TaskForm`)**:
+   - Поля: назва, опис, категорія, пріоритет.
+   - Валідація: обов'язкове непорожнє поле назви з візуальним попередженням (без використання `alert`).
+   - Автоматичне очищення форми після успішного додавання.
+5. **Незмінне оновлення стану (Immutable updates)**:
+   - Додавання: `[newTask, ...prevTasks]`
+   - Перемикання виконання: `prevTasks.map(t => t.id === id ? { ...t, completed: !t.completed } : t)`
+   - Видалення: `prevTasks.filter(t => t.id !== id)`
+6. **Фільтрація завдань (`TaskFilters`)**:
+   - Режими: «Всі», «Не виконані», «Виконані».
+   - Активний фільтр візуально підсвічується.
+   - Фільтрація не модифікує вихідний масив завдань.
+7. **Статистика (`TaskStats`)**:
+   - Загальна кількість завдань (`tasks.length`).
+   - Кількість виконаних (`tasks.filter(t => t.completed).length`).
+   - Кількість невиконаних (`total - completed`).
+   - Обчислюваний стан (без надлишкових `useState`).
+8. **Умовний рендеринг (Conditional Rendering)**:
+   - Спеціальне інформаційне повідомлення, коли в списку взагалі немає завдань.
+   - Окреме повідомлення, коли за поточним фільтром чи пошуком нічого не знайдено.
+   - Візуальна відмінність виконаних завдань (перекреслений текст, зміна прозорості та бейджів).
+
+### Додаткові реалізовані пункти (бонуси)
+- 🔍 **Пошук завдань** за назвою, описом або категорією в реальному часі.
+- 🔀 **Сортування** за пріоритетом (від високого до низького, від низького до високого) або за алфавітом.
+- 🔢 **Лічильники завдань** безпосередньо у кнопках фільтра («Всі (5)», «Не виконані (3)», «Виконані (2)»).
+- 🧹 **Кнопка «Очистити виконані»** для масового видалення завершених завдань.
+- 🏷️ **Категорії та кольорові бейджі** пріоритету з швидкими підказками.
+- 🌙 **Темна / світла тема** (Dark/Light mode switch) на рівні інтерфейсу.
+
+---
+
+## 🌿 Git Workflow та Conventional Commits
+Робота виконана у виділеній гілці `feature/react-fundamentals` з дотриманням стандарту **Conventional Commits**:
+- `chore: initial project setup with Vite, React 19, and TypeScript`
+- `feat(types): define task model and initial data`
+- `feat(components): implement UI components (Header, TaskForm, TaskStats, TaskFilters, TaskItem, TaskList)`
+- `feat(app): connect state management, immutable updates, and bonus features`
+- `docs: add comprehensive README with defense guide`
