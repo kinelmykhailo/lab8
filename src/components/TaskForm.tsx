@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { PlusCircle, AlertCircle, Tag, Flag, AlignLeft, Type } from 'lucide-react';
 import type { TaskFormData, TaskPriority } from '../types/task';
+import { PRIORITY_CONFIG } from '../types/task';
 
 interface TaskFormProps {
   onAddTask: (data: TaskFormData) => void;
@@ -156,13 +157,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onAddTask }) => {
               Пріоритет
             </label>
             <div className="grid grid-cols-3 gap-2">
-              {(
-                [
-                  { value: 'low', label: 'Низький', activeClass: 'border-emerald-500 bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300' },
-                  { value: 'medium', label: 'Середній', activeClass: 'border-amber-500 bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300' },
-                  { value: 'high', label: 'Високий', activeClass: 'border-rose-500 bg-rose-50 text-rose-700 dark:bg-rose-950/40 dark:text-rose-300' },
-                ] as const
-              ).map((p) => {
+              {Object.values(PRIORITY_CONFIG).map((p) => {
                 const isSelected = priority === p.value;
                 return (
                   <button
@@ -171,7 +166,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onAddTask }) => {
                     onClick={() => setPriority(p.value)}
                     className={`py-2 px-2 text-xs font-medium rounded-xl border text-center transition-all cursor-pointer ${
                       isSelected
-                        ? `${p.activeClass} font-semibold ring-1 ring-offset-0 shadow-xs`
+                        ? p.buttonClass
                         : 'border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/40 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
                     }`}
                   >

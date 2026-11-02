@@ -1,30 +1,13 @@
 import React from 'react';
 import { Check, Trash2, Tag, Flag } from 'lucide-react';
 import type { Task } from '../types/task';
+import { PRIORITY_CONFIG } from '../types/task';
 
 interface TaskItemProps {
   task: Task;
   onToggle: (id: number) => void;
   onDelete: (id: number) => void;
 }
-
-const PRIORITY_CONFIG = {
-  high: {
-    label: 'Високий',
-    badge: 'bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950/40 dark:text-rose-300 dark:border-rose-900',
-    iconColor: 'text-rose-500',
-  },
-  medium: {
-    label: 'Середній',
-    badge: 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/40 dark:text-amber-300 dark:border-amber-900',
-    iconColor: 'text-amber-500',
-  },
-  low: {
-    label: 'Низький',
-    badge: 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-900',
-    iconColor: 'text-emerald-500',
-  },
-};
 
 export const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete }) => {
   const priorityInfo = PRIORITY_CONFIG[task.priority];
@@ -101,7 +84,7 @@ export const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete }) 
 
             {/* Priority badge */}
             <span
-              className={`inline-flex items-center gap-1 text-xs font-medium px-2.5 py-0.5 rounded-lg border ${priorityInfo.badge}`}
+              className={`inline-flex items-center gap-1 text-xs font-medium px-2.5 py-0.5 rounded-lg border ${priorityInfo.badgeClass}`}
             >
               <Flag className={`w-3 h-3 ${priorityInfo.iconColor}`} />
               {priorityInfo.label}

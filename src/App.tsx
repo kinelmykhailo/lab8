@@ -5,13 +5,8 @@ import { TaskForm } from './components/TaskForm';
 import { TaskFilters } from './components/TaskFilters';
 import { TaskList } from './components/TaskList';
 import { initialTasks } from './data/initialTasks';
-import type { Task, TaskFilter, TaskFormData, TaskPriority, TaskSort } from './types/task';
-
-const PRIORITY_WEIGHT: Record<TaskPriority, number> = {
-  high: 3,
-  medium: 2,
-  low: 1,
-};
+import type { Task, TaskFilter, TaskFormData, TaskSort } from './types/task';
+import { PRIORITY_CONFIG } from './types/task';
 
 export function App() {
   // 1. Головний стан списку завдань (ініціалізується початковими даними)
@@ -99,10 +94,10 @@ export function App() {
     .slice()
     .sort((a, b) => {
       if (sortBy === 'priority-desc') {
-        return PRIORITY_WEIGHT[b.priority] - PRIORITY_WEIGHT[a.priority];
+        return PRIORITY_CONFIG[b.priority].weight - PRIORITY_CONFIG[a.priority].weight;
       }
       if (sortBy === 'priority-asc') {
-        return PRIORITY_WEIGHT[a.priority] - PRIORITY_WEIGHT[b.priority];
+        return PRIORITY_CONFIG[a.priority].weight - PRIORITY_CONFIG[b.priority].weight;
       }
       if (sortBy === 'title') {
         return a.title.localeCompare(b.title, 'uk');
